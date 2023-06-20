@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{admin/layout.html}">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lịch sử đơn hàng</title>
+   
+</head>
+
+<body>
+<section class="row" layout:fragment="content">
+    <div class="container">
+        <h3 class="text-center my-3">Tổng  đơn hàng</h3>
+        <div th:if="${message != null}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${message}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Địa chỉ</th>
+                                <th>Ngày Mua</th>
+                                <th>Người Mua</th>
+                                <th>Hành động</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="order : ${orders}">
+                                <td th:text="${order.orderId}"></td>
+                                <td th:text="${order.address}"></td>
+                                <td th:text="${order.orderDate}"></td>
+                                <td th:text="${order.account.username}"></td>
+                                <td>
+                                    <div class="d-grid gap-2">
+                                        <a th:href="@{/admin/order/detail/{orderId}(orderId=${order.orderId})}"
+                                           class="btn btn-primary btn-sm">Xem chi tiết</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

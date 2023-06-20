@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{home/index.html}">
+
+<head>
+    <style>
+
+        .card {
+            width: 1100px;
+            height: 100%;
+            max-width: 1700px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th,
+        .table td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        .table th {
+            background-color: #f8f8f8;
+            font-weight: bold;
+        }
+
+        .table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .table tr:hover {
+            background-color: #e0e0e0;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .my-3 {
+            margin-top: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .alert {
+            padding: 10px;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+        }
+
+        .alert-success {
+            background-color: #dff0d8;
+            color: #3c763d;
+            border: 1px solid #d6e9c6;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: #fff;
+            border: none;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+        }
+
+        .btn-close {
+            padding: 4px;
+        }
+
+        input[type="number"] {
+            width: 50px;
+        }
+
+        .text-center p {
+            margin: 0;
+        }
+
+        .d-flex {
+            display: flex;
+        }
+
+        .me-auto {
+            margin-right: auto;
+        }
+
+        .ms-auto {
+            margin-left: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="row" layout:fragment="content">
+       
+        <div class="container mh-100" style="padding: 100px 10px;">
+            <h3 class="text-center my-3">Xác nhận đơn hàng</h3>
+             <div th:if="${message != null}" class="alert alert-success alert-dismissible fade show" role="alert">
+                <span th:text="${message}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            
+            <div class="row">
+                <div class="card col-7 mx-2">
+                    <div class="card-body">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Tên sản phẩm</th>
+                                    <th scope="col">Đơn giá</th>
+                                    <th scope="col">Số lượng</th>
+                                    <th scope="col">Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="item, index : ${cart.items}">
+                                    <th scope="row" th:text="${index.index + 1}"></th>
+                                    <td th:text="${item.name}"></td>
+                                    <td>
+                                        <span th:text="${#numbers.formatDecimal(item.unitPrice, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></span>
+                                    </td>
+                                    <td th:text="${item.quantity}"></td>
+                                    <td>
+                                        <span th:text="${#numbers.formatDecimal(item.unitPrice * item.quantity, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card col-4 mx-2">
+                    <div class="card-body">
+                        <form th:action="@{/cart/checkout}" method="post" th:object="${data}">
+                            <p>
+                                <b>Tổng tiền:
+                                    <span th:text="${#numbers.formatDecimal(cart.amount, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></span>
+                                </b>
+                            </p>
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Địa chỉ</label>
+                                <textarea id="address" name="address" class="form-control" rows="3"
+                                    th:field="*{address}"></textarea>
+                                <div class="form-text text-danger" th:errors="*{address}"></div>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary">Đặt hàng</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

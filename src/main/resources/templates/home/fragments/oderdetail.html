@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{home/index.html}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Chi tiết đơn hàng</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/css/bootstrap.min.css">
+</head>
+
+<body>
+<section class="row" layout:fragment="content">
+    <div class="container">
+        <h3 class="text-center my-3">Chi tiết đơn hàng</h3>
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Tên sản phẩm</th>
+                                <th scope="col">Ảnh sản phẩm</th>
+                                <th scope="col">Đơn giá</th>
+                                <th scope="col">Số lượng</th>
+                                <th scope="col">Thành tiền</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="orderDetail, index : ${orderDetails}">
+                                <td th:text="${index.index + 1}"></td>
+                                <td th:text="${orderDetail.product.name}"></td>
+                                <td>
+                                    <img class="product__image" style="height: 80px; width: 80px;"
+                                         th:src="@{/uploads/images/} + ${orderDetail.product.image}" />
+                                </td>
+                                <td th:text="${#numbers.formatDecimal(orderDetail.unitPrice, 0, 'COMMA', 3, 'POINT')}"></td>
+                                <td th:text="${orderDetail.quantity}"></td>
+                                <td th:text="${#numbers.formatDecimal(orderDetail.unitPrice * orderDetail.quantity, 0, 'COMMA', 3, 'POINT')}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

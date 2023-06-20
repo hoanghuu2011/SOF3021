@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{home/index.html}">
+   
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 0 10px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 800px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th,
+        .table td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        .table th {
+            background-color: #f8f8f8;
+            font-weight: bold;
+        }
+
+        .table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .table tr:hover {
+            background-color: #e0e0e0;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .my-3 {
+            margin-top: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .alert {
+            padding: 10px;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+        }
+
+        .alert-success {
+            background-color: #dff0d8;
+            color: #3c763d;
+            border: 1px solid #d6e9c6;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: #fff;
+            border: none;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+        }
+
+        .btn-close {
+            padding: 4px;
+        }
+
+        input[type="number"] {
+            width: 50px;
+        }
+
+        .text-center p {
+            margin: 0;
+        }
+
+        .d-flex {
+            display: flex;
+        }
+
+        .me-auto {
+            margin-right: auto;
+        }
+
+        .ms-auto {
+            margin-left: auto;
+        }
+    </style>
+    
+</head>
+
+<body>
+
+    <section class="row" layout:fragment="content">
+    <div class="container mh-100" style="padding: 100px 10px;">
+        <h3 class="text-center my-3">Giỏ hàng</h3>
+        <div th:if="${message != null}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${message}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div class="mx-auto" style="max-width: 800px">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th style="width: 50;">Tên</th>
+                                <th style="width: 50;">Hình</th>
+                                <th>Đơn giá</th>
+                                <th>Số lượng</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="item, index : ${cart.items}">
+                                <form th:action="@{/cart/update/{productId}(productId=${item.productId})}"
+                                    method="post">
+                                    <input type="hidden" name="productId" th:value="${item.productId}">
+                                    <td th:text="${index.index + 1}"></td>
+                                    <td style="width: 50;" th:text="${item.name}">
+                                    
+                                    </td>
+                                    <td><img width="50" class="product__image"
+                                            th:src="@{${item.image} != null} ? @{/uploads/images/} + ${item.image} : @{/images/gucci.jpg}"/>
+                                    </td>
+                                    <!-- <td th:text="${#numbers.formatDecimal(item.UnitPrice, 0, 'NUMBER')} + ' VNĐ'"></td> -->
+                                    <td th:text="${item.UnitPrice * item.quantity}"></td>
+                                    <!-- <td th:text="${#numbers.formatDecimal(item.UnitPrice * item.quantity, 0, 'NUMBER')} + ' VNĐ'"></td> -->
+                                    <td><input type="number" name="quantity" th:value="${item.quantity}"
+                                        onblur="this.form.submit()">
+                                      </td>
+                                    <td>
+                                        <a th:href="@{/cart/remove/{productId}(productId=${item.productId})}"
+                                            onclick="return confirm('Bạn muốn xoá sản phẩm này khỏi giỏ hàng?');"
+                                            class="btn btn-danger btn-sm">Xoá</a>
+
+                                    </td>
+
+
+                                    </td>
+                                </form>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div th:if="${cart.count <= 0}" class="text-center">
+                        <p>Giỏ hàng trống</p>
+                        <a  th:href="@{'/products/all'}" class="btn btn-primary">Mua hàng</a>
+                    </div>
+                    <div th:if="${cart.count > 0}">
+                        <p>
+                            <!-- Tổng tiền: <span th:text="${#numbers.formatDecimal(cart.amount, 0, 'NUMBER')} + ' VNĐ'"></span> -->
+                        </p>
+                        <div class="d-flex">
+                            <div class="me-auto">
+                                <a  th:href="@{'/products/all'}" class="btn btn-primary">Mua hàng</a>
+                            </div>
+                            <div class="ms-auto">
+                                <form th:action="@{/cart/clear}" method="post">
+                                    <button type="submit" class="product__button">Xóa tất cả</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </section>
+</body>
+
+</html>

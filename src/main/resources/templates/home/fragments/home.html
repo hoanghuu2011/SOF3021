@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{home/index.html}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sản phẩm</title>
+    <link rel="stylesheet" href="/css/style2.css">
+    <style>
+        .product {
+            text-align: center;
+            margin-bottom: 20px;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.374);
+            height: 350px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .product__image {
+            height: 170px;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .product:hover .product__image {
+            transform: translateY(-10px);
+        }
+
+        .product__title {
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .product__price {
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .product__material {
+            margin-top: 5px;
+        }
+
+        .product__button {
+            background-color: #fb0303;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            margin-top: auto;
+            /* Nút mua được căn dưới cùng */
+            cursor: pointer;
+        }
+
+        .product__discount {
+            text-decoration: line-through;
+            margin-right: 5px;
+        }
+
+        .product__discount-percent {
+            font-size: 14px;
+            color: white;
+            background-color: #fb0303;
+            padding: 2px 5px;
+            border-radius: 2px;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+
+        /* CSS cho phần giá gốc */
+        .product__unit-price {
+            font-size: 14px;
+            color: gray;
+        }
+
+        .category-filter {
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .category-filter label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .category-filter a {
+            display: inline-block;
+            margin-right: 10px;
+            padding: 5px 10px;
+            background-color: #f2f2f2;
+            color: #333;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .category-filter a:hover {
+            background-color: #e0e0e0;
+        }
+
+        .category-filter select {
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .category-filter select:hover {
+            background-color: #e0e0e0;
+        }
+
+        .category-filter select option {
+            background-color: #fff;
+            color: #333;
+        }
+
+        .product-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .product-list .product {
+            width: 250px;
+            margin: 10px;
+            position: relative;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .pagination li {
+            display: inline;
+            margin-right: 5px;
+        }
+
+        .pagination li a {
+            color: #333;
+            padding: 5px 10px;
+            text-decoration: none;
+            background-color: #f2f2f2;
+            border-radius: 3px;
+        }
+
+        .pagination li.active a {
+            background-color: #fb0303;
+            color: #fff;
+        }
+
+        .pagination li a:hover {
+            background-color: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+
+    <section class="row" layout:fragment="content">
+        <h1 style="text-align: center;">Sản phẩm</h1>
+        <div class="row mt-3">
+            <div class="col-md-12 category-filter">
+                <label for="category">Lọc sản phẩm theo danh mục:</label>
+                <a class="filter-button" th:href="@{/products/all}">Tất cả</a>
+                <a class="filter-button" th:each="category : ${categories}" th:href="@{/products/category/} + ${category.categoryId}"
+                    th:text="${category.name}"></a>
+            </div>
+        </div>
+        <div th:if="${message != null}" class="alert alert-primary" role="alert">
+            <i>[[${message}]]</i>
+         </div>
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <div class="product-list">
+                    <div class="product" th:each="item : ${products}">
+                        <div class="product__details">
+                            <img class="product__image"
+                                th:src="@{${item.image} != null} ? @{/uploads/images/} + ${item.image} : @{/images/gucci.jpg}"
+                                alt="Hình ảnh sản phẩm">
+                            <span class="product__discount-percent" th:if="${item.discount > 0}" th:text="'giảm' + ${item.discount*100} + '%'"></span>
+                            <h3 class="product__title" th:text="${item.name}"></h3>
+                            <h3 class="product__title" th:text="${item.category.name}"></h3>
+                            <div th:if="${item.discount > 0}">
+                                <span class="product__discount" th:text="${item.unitPrice} + ' VNĐ'"></span>
+                            </div>
+                            <p class="product__price" th:text="'Giá: ' + (${item.unitPrice} - ${item.unitPrice*item.discount}) + ' VNĐ'"></p>
+                        </div>
+                        <div class="product__button-container">
+                            <form th:action="@{/cart/add/{productId}(productId=${item.productId})}" method="post">
+                                <button type="submit" class="product__button">Mua</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+              
+            </div>
+
+            <div class="pagination mx-auto">
+                <ul>
+                    <li th:each="page, iterStat : ${#numbers.sequence(0, totalPages - 1)}"
+                        th:class="${currentPage == iterStat.index ? 'active' : ''}">
+                        <a th:href="@{/products/all(page=${page})}" th:text="${page + 1}"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+    </section>
+    <script>
+        function decreaseQuantity(btn) {
+            const input = btn.parentNode.previousElementSibling;
+            if (input.value > 1) {
+                input.value--;
+            }
+        }
+
+        function increaseQuantity(btn) {
+            const input = btn.parentNode.previousElementSibling;
+            input.value++;
+        }
+    </script>
+</body>
+</html>

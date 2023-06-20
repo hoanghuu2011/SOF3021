@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{admin/layout.html}"
+>
+<head>
+<style>
+        body {
+        background-color: #FBFBFB;
+    }
+
+    .card-header {
+        background-color: #f3f3f3;
+        color: #000;
+    }
+
+    .form-group label {
+        font-weight: bold;
+    }
+
+    .btn {
+        border-radius: 30px;
+        padding: 10px 20px;
+    }
+
+    .btn i {
+        margin-right: 5px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+    
+    .logo {
+        display: flex;
+        align-items: center;
+    }
+    
+    .logo img {
+        height: 60px;
+        width: auto;
+        margin-right: 10px;
+    }
+    
+    .card {
+        margin-top: 50px;
+        border: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card-header {
+        background-color: #ff0800;
+        color: #fff;
+        border-radius: 0;
+    }
+    
+    .card-body {
+        padding: 30px;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-group label {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+    
+    .form-control {
+        border-radius: 30px;
+        height: 65px;
+        font-size: 16px;
+    }
+    
+    .form-text {
+        font-size: 14px;
+    }
+    
+    .btn-container {
+        text-align: center;
+        margin-top: 30px;
+    }
+</style>
+</head>
+
+<body> 
+    <section class="row" layout:fragment="content">
+       
+        <div class="col mt-4">
+            <form th:action="@{/admin/accounts/saveOrUpdate}" method="post" th:object="${account}">
+                <div class="card">
+                    <div class="card-header">
+                            <div class="logo">
+                                <img src="/images/favicon.ico" alt="Tech Polyshop" class="img-fluid">
+                                <h4 th:text="${account.isEdit? 'Edit Account' :'Add New Account'}" class="mb-0 text-center">Add New Account</h4>
+                            </div>
+                        
+                    </div>
+                    <div class="card-body">
+                        <input type="hidden" th:field="*{isEdit}" readonly>
+                        <div class="form-group">
+                            <label for="username"><i class="fa fa-user"></i> Username:</label>
+                            <input type="text"class="form-control"
+                            th:field="*{username}"
+                            name="username" id="username" aria-describedby="usernameHid" placeholder="Username" required >
+                            <small id="UsernameHid"  th:if="${#fields.hasErrors('username')}"
+                             class="form-text text-muted">Username is invalid</small>
+                        </div>
+                        <div class="form-group">
+                            <label class="icon-lp"><i class="fas fa-user"></i>Fullname</label>
+                            <input type="text" name="fullname" id="fullname"th:field="*{fullname}" tabindex="1" class="form-control" placeholder="Fullname" value="" required="">
+                        </div>
+                        <div class="form-group">
+                            <label for="password"><i class="fa fa-lock"></i> Password: </label>
+                            <input type="password" class="form-control"th:field="*{password}"
+                            name="password" id="password" aria-describedby="passwordHid" placeholder="Password" required>
+                            <small id="passwordHid"  th:if="${#fields.hasErrors('password')}"
+                            class="form-text text-muted">Password is invalid</small>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Vai trò</label> <br>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="role" id="user" value="USER" th:checked="${account.role == 'USER'}">
+                                <label class="form-check-label" for="user">Người dùng</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="role" id="admin" value="ADMIN" th:checked="${account.role == 'ADMIN'}">
+                                <label class="form-check-label" for="admin">Quản trị viên</label>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                    <div class="card-footer text-center">
+                        <div class="btn-container">
+                            <button type="reset" class="btn btn-primary"><i class="fas fa-undo"></i> Reset</button>
+                            <a th:href="@{/admin/accounts}" class="btn btn-danger"><i class="fas fa-list"></i> List Categories</a>
+                            <button class="btn btn-success"> <i class="fas fa-save">
+                            <span th:if="${account.isEdit}">Update</span>
+                            <span th:if="${!account.isEdit}">Save</span>
+                        </i> 
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    
+    </section>
+</body>
+</html>

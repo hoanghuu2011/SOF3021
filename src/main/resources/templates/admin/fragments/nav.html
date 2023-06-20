@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+<body>
+    <div th:fragment="nav">
+        <div class="container-fluid">
+            <div class="row content">
+              <div class="col-sm-2 sidenav">
+                <br>
+                <a th:href="@{/home}">
+                  <button class="btn btn-warning" style="width: 100%;">
+                    <i class="fas fa-arrow-left"></i> Quay về Shop
+                  </button>
+                </a>
+                <h2>Poly Store</h2>
+                <br>
+                <ul class="nav flex-column">
+                  <li class="nav-item">
+                    <a class="nav-link" href="#"></a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/reports}"><i class="fas fa-chart-bar"></i> Thống Kê</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fas fa-users"></i> Mange Customer</a>
+                  </li>
+                  
+                  <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i> Mange Order</a>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="productDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-box"></i> Mange Product
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="productDropdown">
+                      <a class="dropdown-item"th:href="@{/admin/products/add}"><i class="fas fa-box"></i>Mange Product Add</a>
+                      <a class="dropdown-item" th:href="@{/admin/products/}"><i class="fas fa-box"></i> Mange Product list</a>
+                    </div>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="productDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fa fa-user"></i> Mange Account
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="productDropdown">
+                      <a class="dropdown-item"th:href="@{/admin/accounts/add}"><i class="fas fa-box"></i>Mange Account Add</a>
+                      <a class="dropdown-item" th:href="@{/admin/accounts/}"><i class="fas fa-box"></i> Mange Account list</a>
+                    </div>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/categories/searchpaginated}"><i class="fas fa-user"></i> Mange Category</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/categories/add}"><i class="fas fa-user"></i> Mange Category Add</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/orders}"><i class="fas fa-file-invoice"></i>Hóa đơn</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fas fa-user"></i> Người Dùng</a>
+                  </li>
+                  <li class="nav-item">
+                    <form th:action="@{/logout}" method="post" style="display: inline;">
+                        <button type="submit" class="nav-link btn btn-link float float-right" style="padding: 0; padding-top: 1cm;">
+                            <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                        </button>
+                    </form>
+                </li>
+                  
+                </ul>
+              </div>
+              
+              <div class="col">       
+              <section class="col-11 ml-2">
+                    <div layout:fragment="content"></div>
+            </section>
+        
+              </div>
+            </div>
+          </div>
+          
+          <!-- <nav class="navbar navbar-expand-sm navbar-light bg-light">
+            <a class="navbar-brand" href="#">Shop</a>
+            <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavId">
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li><samp></samp>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Mange Customer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"th:href="@{/admin/categories/search}">Mange Category </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Mange Product</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Mange Order</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Mange Profile</a>
+                    </li>
+                    
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            </div>
+        </nav> -->
+        
+    </div>
+</body>
+</head>
+
+</html>

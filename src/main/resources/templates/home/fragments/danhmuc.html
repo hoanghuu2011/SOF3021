@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Products by Category</title>
+</head>
+
+<body>
+    <h1>Categories</h1>
+    <form th:action="@{/products/category}" method="get">
+        <select name="categoryId" th:onchange="this.form.submit()">
+            <option value="">Select a category</option>
+            <option th:each="category : ${categories}" th:value="${category.categoryId}" th:text="${category.name}"></option>
+        </select>
+    </form>
+    <h2 th:if="${category != null}" th:text="'Sản phẩm trong danh mục: ' + ${category.name}"></h2>
+    <ul>
+        <li th:each="product : ${products}">
+            <span th:text="${product.image}"></span>
+        </li>
+    </ul>
+   
+</body>
+
+</html>
